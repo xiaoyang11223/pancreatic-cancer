@@ -1,26 +1,26 @@
 rm(list = ls()) 
-table<-read.csv("F:/RÓïÑÔ/ÒÈÏÙ°©×Ü.csv")
+table<-read.csv("F:/R/yixiantotal.csv")
 table<-as.data.frame(table)
 ind<-sample(2,nrow(table),replace = TRUE,prob = c(0.70,0.30))
 set.seed(123)
 trainset<-table[ind==1,]
 testset<-table[ind==2,]
-write.csv(trainset,"F:/RÓïÑÔ/train.csv")
-write.csv(testset,"F:/RÓïÑÔ/test.csv")
+write.csv(trainset,"F:/R/train.csv")
+write.csv(testset,"F:/R/test.csv")
 library(tableone)
 
 rm(list = ls()) 
 
-aa<- read.csv('F:/RÓïÑÔ/yixian1.csv')
+aa<- read.csv('F:/R/yixian1.csv')
 
 library(tableone)
 head(aa)
 str(aa)
 
-for(i in names(aa)[c(1:4)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(6:11)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(13:18)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(20,21)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
+for(i in names(aa)[c(1:4)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(6:11)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(13:18)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(20,21)]){aa[,i]<-as.factor(aa[,i])}
 names(aa)
 shapiro.test(aa$Age)
 shapiro.test(aa$Tumor.size)
@@ -50,7 +50,7 @@ table1<- print(table,
                noSpaces = TRUE, 
                printToggle = TRUE) 
 
-write.csv(table1, file = "F:/RÓïÑÔ/yixian33.csv")
+write.csv(table1, file = "F:/R/yixian33.csv")
 
 
 
@@ -59,7 +59,7 @@ library(plyr)
 
 rm(list = ls()) 
 
-aa<- read.csv('F:/RÓïÑÔ/yixian1.csv')
+aa<- read.csv('F:/R/yixian1.csv')
 
 head(aa)
 
@@ -72,7 +72,7 @@ y<- Surv(time = aa$Time,event = aa$State==1)
 
 cox<- coxph(y~Radiation, data=aa);summary(cox)
 
-Uni_cox1<- function(x){ FML<- as.formula(paste0 ("y~",x))#x¾ÍÊÇÊäÈëµÄ±äÁ¿
+Uni_cox1<- function(x){ FML<- as.formula(paste0 ("y~",x))
 cox<- coxph(FML,data=aa)
 cox1<-summary(cox)
 HR <- round(cox1$coefficients[,2],2)    
@@ -91,7 +91,7 @@ return(Uni_cox)}
 names(aa)
 
 
-variable.names<- colnames(aa)[c(1,2,4,6,8,9,10,11,12,13,15,16,17)] ##Ñ¡ÔñĞèÒª½øĞĞµ¥ÒòËØCov·ÖÎöµÄ±äÁ¿
+variable.names<- colnames(aa)[c(1,2,4,6,8,9,10,11,12,13,15,16,17)] 
 
 
 cox3 <- lapply(variable.names, Uni_cox1)
@@ -99,7 +99,7 @@ cox3 <- ldply(cox3,data.frame)
 cox3$HR.CI95<-paste0(cox3$HR,"(",cox3$CI5,'-',cox3$CI95,")");cox3
 cox2<-cox3[,-2:-4]
 colnames(cox2)[1]<-'Characteristics'
-write.csv(cox2, file = "F:/RÓïÑÔ/µ¥ÒòËØÒÈÏÙ°©.csv")
+write.csv(cox2, file = "F:/R/analysis.csv")
 
 for(i in names(aa)[c(1,2,4)]){aa[,i]<-as.factor(aa[,i])}
 for(i in names(aa)[c(6:17)]){aa[,i]<-as.factor(aa[,i])}
@@ -130,8 +130,8 @@ mul_cox1 <- data.frame("HR" =mul_HR,
 rm(list = ls()) 
 library(rms)
 install.packages("rms")
-aa<- read.csv('F:/RÓïÑÔ/yixian1.csv')
-aa<- read.csv('F:/RÓïÑÔ/yixianspss.csv')
+aa<- read.csv('F:/R/yixian1.csv')
+aa<- read.csv('F:/R/yixianspss.csv')
 summary(aa$Surgery)
 aa$Surgery<-factor(aa$Surgery,
                    levels = c("Extended pancreatoduodenectomy","Local excision of tumor","Local or pancreatectomy","No","Total pancreatectomy"),
@@ -168,11 +168,11 @@ aa$AJCC<-factor(aa$AJCC,
 aa$Grade<-factor(aa$Grade)
 aa$AJCC<-factor(aa$AJCC)
 summary(aa$Age)
-for(i in names(aa)[c(1:10)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(1,2)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(10:11)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(13:18)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(20,21)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
+for(i in names(aa)[c(1:10)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(1,2)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(10:11)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(13:18)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(20,21)]){aa[,i]<-as.factor(aa[,i])}
 summary(aa$ajcc)
 str(aa)
 
@@ -198,7 +198,6 @@ ccox<-cox.zph(nomo22)
 print(ccox)
 #options(repr.plot.width=10,repr.plot.heigh=40)
 ggcoxzph(ccox)
-#»òÕßÖ±½Ó¼ÆËãCÖ¸Êı,C-index =1-c£»
 Cindex <- rcorrcens(Surv(as.numeric(aa$time),aa$state==1)~predict(nomo2))
 Cindex 
 
@@ -233,12 +232,12 @@ library(rms)
 
 
 rm(list = ls())
-aa<- read.csv('F:/RÓïÑÔ/training.csv')
+aa<- read.csv('F:/R/training.csv')
 names(aa)
-for(i in names(aa)[c(1:11)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(14,15)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(13:18)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
-for(i in names(aa)[c(20,21)]){aa[,i]<-as.factor(aa[,i])}##ÅúÁ¿×ªÎªÒò×Ófactor
+for(i in names(aa)[c(1:11)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(14,15)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(13:18)]){aa[,i]<-as.factor(aa[,i])}
+for(i in names(aa)[c(20,21)]){aa[,i]<-as.factor(aa[,i])}
 
 nomo<-datadist(aa)
 options(datadist='nomo')
@@ -248,7 +247,7 @@ nomo1 <- cph(Surv(time,state==1)~age+race+grade+surgery+radiation+chemotherapy+t
              x=T,y=T,
              data=aa,
              surv=T,
-             time.inc=12*1#Ê¾ÀıÊı¾İtime=ÔÂËùÒÔ12*5¾ÍÊÇÆÀ¹À5ÄêµÄĞ£×¼ÇúÏß
+             time.inc=12*1
 )
 Cindex <- rcorrcens(Surv(as.numeric(aa$time),aa$state==1)~predict(nomo1))
 Cindex$SD
@@ -292,7 +291,7 @@ p<- calibrate(nomo3,
 
 plot(p,
      add=F,
-     conf.int=T,£©
+     conf.int=T,ï¼‰
      subtitles = F,
      cex.subtitles=0.8, 
      lwd=2,
@@ -366,8 +365,8 @@ legend("bottomright", legend=c("1 year", "3 year","5 year"),
 
 
 
-rm(list = ls()) #ÇåÀí»·¾³
-aa<- read.csv('F:/RÓïÑÔ/test1.csv')
+rm(list = ls()) 
+aa<- read.csv('F:/R/test1.csv')
 names(aa)
 
 
@@ -444,8 +443,8 @@ library(ggprism)
 rm(list = ls()) 
 
 
-aa<- read.csv('F:/RÓïÑÔ/yixianspss.csv')
-aa<- read.csv('F:/RÓïÑÔ/training.csv')
+aa<- read.csv('F:/R/yixianspss.csv')
+aa<- read.csv('F:/R/training.csv')
 for(i in names(aa)[c(1:10)]){aa[,i]<-as.factor(aa[,i])}
 
 bb<-datadist(aa)
@@ -474,8 +473,7 @@ library(survcomp)
 library(survival)
 library(rms)
 
-
-data1<-read.csv('F:/RÓïÑÔ/risk.csv')
+data1<-read.csv('F:/R/risk.csv')
 data1$Surgery<-factor(data1$Surgery,
                       levels = c("Extended pancreatoduodenectomy","Local excision of tumor","Local or pancreatectomy","No","Total pancreatectomy"),
                       labels = c("RP","LET","LP","No","TP"))
@@ -507,10 +505,10 @@ results<-formula_rd(nomogram=nompoint)
 data1<-na.omit(data1)
 data1$points<-points_cal(formula = results$formula,rd=data1)
 
-write.csv(data1,"F:/RÓïÑÔ/×ÜÌå·çÏÕÖµ.csv")
+write.csv(data1,"F:/R/totalrisk.csv")
 
-data3<-read.csv("F:/RÓïÑÔ/×ÜÌå·çÏÕÖµ1.csv")
-data3<-read.csv("F:/RÓïÑÔ/×ÜÌå·çÏÕÖµ.csv")
+data3<-read.csv("F:/R/totalrisk1.csv")
+data3<-read.csv("F:/R/tatolrisk.csv")
 head(data3)
 
 
@@ -550,7 +548,7 @@ ggsurvplot(fit,
            font.legend=15,  
            break.x.by = 20, 
            palette="lancet") 
-####
+
 fit1 <- survfit(Surv(time, status)~risk, data=data3)
 ggsurvplot(fit, 
            data = data3,    
@@ -570,7 +568,7 @@ library(survcomp)
 library(survival)
 library(rms)
 
-data1<-read.csv('F:/RÓïÑÔ/training1.csv')
+data1<-read.csv('F:/R/training1.csv')
 data1$Surgery<-factor(data1$Surgery,
                       levels = c("Extended pancreatoduodenectomy","Local excision of tumor","Local or pancreatectomy","No","Total pancreatectomy"),
                       labels = c("RP","LET","LP","No","TP"))
@@ -607,7 +605,7 @@ results<-formula_rd(nomogram=nompoint)
 data1<-na.omit(data1)
 data1$points<-points_cal(formula = results$formula,rd=data1)
 
-write.csv(data1,"F:/RÓïÑÔ/ÑµÁ·¼¯·çÏÕÖµ.csv")
+write.csv(data1,"F:/R/trainrisk.csv")
 
 
 library(survivalROC)
@@ -621,7 +619,7 @@ cutoff<-surv_cutpoint(data1,
                       variables="points"
 );summary(cutoff) 
 
-data3<-read.csv("F:/RÓïÑÔ/ÑµÁ·¼¯·çÏÕÖµ.csv")
+data3<-read.csv("F:/R/trainrisk.csv")
 head(data3)
 fit <- survfit(Surv(time,state) ~ risk,  
                data = data3) 
@@ -657,7 +655,7 @@ library(survival)
 library(rms)
 
 
-data1<-read.csv('F:/RÓïÑÔ/test.csv')
+data1<-read.csv('F:/R/test.csv')
 data1$Surgery<-factor(data1$Surgery,
                       levels = c("Extended pancreatoduodenectomy","Local excision of tumor","Local or pancreatectomy","No","Total pancreatectomy"),
                       labels = c("RP","LET","LP","No","TP"))
@@ -685,7 +683,7 @@ results<-formula_rd(nomogram=nompoint)
 data1<-na.omit(data1)
 data1$points<-points_cal(formula = results$formula,rd=data1)
 
-write.csv(data1,"F:/RÓïÑÔ/ÑéÖ¤¼¯·çÏÕÖµ.csv")
+write.csv(data1,"F:/R/testrisk.csv")
 
 
 library(survivalROC)
@@ -699,7 +697,7 @@ cutoff<-surv_cutpoint(data1,
                       variables="points"
 );summary(cutoff) 
 
-data3<-read.csv("F:/RÓïÑÔ/ÑéÖ¤¼¯·çÏÕÖµ.csv")
+data3<-read.csv("F:/R/testrisk.csv")
 head(data3)
 fit <- survfit(Surv(time,state) ~ risk, 
                data = data3) 
@@ -735,7 +733,7 @@ library(rms)
 library(DynNom)
 
 rm(list = ls()) 
-aa<- read.csv('F:/RÓïÑÔ/yixianspss.csv')
+aa<- read.csv('F:/R/yixianspss.csv')
 str(aa)
 
 nomo<-datadist(aa)
